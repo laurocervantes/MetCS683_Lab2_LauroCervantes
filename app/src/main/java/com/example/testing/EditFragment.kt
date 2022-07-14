@@ -31,8 +31,8 @@ class EditFragment : Fragment() {
         projTitle = view.findViewById(R.id.projTitleEdit)
         projDesc =  view.findViewById(R.id.projDescEdit)
 
-        submit = view.findViewById<Button>(R.id.submit)
-        cancel = view.findViewById<Button>(R.id.cancel)
+        submit = view.findViewById(R.id.submit)
+        cancel = view.findViewById(R.id.cancel)
 
         projTitle.setText(Project.project.title)
         projDesc.setText(Project.project.description)
