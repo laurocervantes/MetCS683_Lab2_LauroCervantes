@@ -1,8 +1,19 @@
 package com.example.testing
 
-data class Project(val id: Int, var title: String, var description: String){
+data class Project
+    (val id: Int,
+     var title: String,
+     var description: String,
+     var authors: String,
+     var links: String
+    )
+{
+
     companion object {
-        var project = Project(0, "Weather Forecast", "Weather Forcast is an app ...")
+        var project = Project(0,
+            "Weather Forecast",
+            "Weather Forcast is an app ...",
+            "","")
     }
 
 //        var projects = listOf(
