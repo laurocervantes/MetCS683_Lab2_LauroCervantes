@@ -8,12 +8,16 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
+    private lateinit var projTitle: TextView
+    private lateinit var projDesc: TextView
+    private lateinit var editProj: ImageButton
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view,savedInstanceState)
 
-        val projTitle = view.findViewById<TextView>(R.id.projTitle)
-        val projDesc =  view.findViewById<TextView>(R.id.projDesc)
-        val editProj = view.findViewById<ImageButton>(R.id.editProj)
+        projTitle = view.findViewById(R.id.projTitle)
+        projDesc =  view.findViewById(R.id.projDesc)
+        editProj = view.findViewById(R.id.editProj)
 
         projTitle.text =  Project.project.title
         projDesc.text = Project.project.description
