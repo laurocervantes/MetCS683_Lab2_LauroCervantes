@@ -6,6 +6,7 @@
     <string name="project_description">Project Description</string>
     <string name="authors">Authors</string>
     <string name="add_a_link">Add a Link</string>
+    <string name="favorite">Favorite</string>
 
     <string-array name="authors_array">
         <item>Kim Kardashian</item>

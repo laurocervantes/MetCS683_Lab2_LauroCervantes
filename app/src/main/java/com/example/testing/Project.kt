@@ -5,7 +5,8 @@ data class Project
      var title: String,
      var description: String,
      var authors: String,
-     var links: String
+     var links: String,
+     var isFavorite: String
     )
 {
 
@@ -13,7 +14,7 @@ data class Project
         var project = Project(0,
             "Weather Forecast",
             "Weather Forcast is an app ...",
-            "","")
+            "","", "Select if project will be fav")
     }
 
 //        var projects = listOf(
