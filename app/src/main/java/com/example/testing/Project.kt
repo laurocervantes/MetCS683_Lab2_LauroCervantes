@@ -14,7 +14,7 @@ data class Project
         var project = Project(0,
             "Weather Forecast",
             "Weather Forcast is an app ...",
-            "","", "Select if project will be fav")
+            "","", "Will show if project will be fav")
     }
 
 //        var projects = listOf(

@@ -13,6 +13,8 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     private lateinit var editProj: ImageButton
     private lateinit var links: TextView
     private lateinit var isFav: TextView
+    private lateinit var authors: TextView
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -23,11 +25,13 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         editProj = view.findViewById(R.id.editProj)
         links = view.findViewById(R.id.editTextTextLinks)
         isFav = view.findViewById(R.id.textViewIsFav)
+        authors = view.findViewById(R.id.projectAuthors)
 
         projTitle.text =  Project.project.title
         projDesc.text = Project.project.description
         links.text = Project.project.links
         isFav.text = Project.project.isFavorite
+        authors.text = Project.project.authors
 
         editProj.setOnClickListener{
             view.findNavController().
