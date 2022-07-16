@@ -57,14 +57,12 @@ class EditFragment : Fragment() {
             arrayAdapterAuthor.notifyDataSetChanged()
             listViewAuthor.adapter = arrayAdapterAuthor
         }
-        editTextLinks = view.findViewById(R.id.editTextTextMultiLine)
 
 
         submit.setOnClickListener {
             Project.project.title = projTitle.text.toString()
             Project.project.description = projDesc.text.toString()
             Project.project.authors = listAuthor.toString()
-            Project.project.links = editTextLinks.text.toString()
             if(isFavorite.isChecked){
                 isFavorite.text = "Project is Favorite"
                 Project.project.isFavorite = isFavorite.text.toString()
