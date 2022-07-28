@@ -3,25 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/detailFragment">
+    app:startDestination="@id/projListRecycleViewFragment">
 
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.testing.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="position"
+            app:argType="integer"
+            android:defaultValue="0"/>
         <action
             android:id="@+id/action_detailFragment_to_editFragment"
-            app:destination="@id/editFragment" />
+            app:destination="@id/editFragment">
+            <argument
+                android:name="position"
+                app:argType="integer" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/editFragment"
         android:name="com.example.testing.EditFragment"
         android:label="fragment_edit"
         tools:layout="@layout/fragment_edit" >
+        <argument
+            android:name="position"
+            app:argType="integer"
+            android:defaultValue="0"/>
         <action
             android:id="@+id/action_editFragment_pop"
             app:popUpTo="@id/editFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true" >
+
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/projListRecycleViewFragment"
+        android:name="com.example.testing.ProjectListRecyclerViewFragment"
+        android:label="ProjListRecycleViewFragment" >
+        <action
+            android:id="@+id/action_projListRecycleViewFragment_to_detailFragment"
+            app:destination="@id/detailFragment" >
+            <argument
+                android:name="position"
+                app:argType="integer" />
+        </action>
     </fragment>
 </navigation>

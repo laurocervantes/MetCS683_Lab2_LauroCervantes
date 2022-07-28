@@ -10,16 +10,15 @@ data class Project
 {
 
     companion object {
-        var project = Project(0,
-            "Weather Forecast",
-            "Weather Forcast is an app ...",
-            "Authors of project will be shown here","Will show if project will be favorite")
+        // val project = Project(0, "Weather Forecast", "Weather Forcast is an app ...")
+        val projects = mutableListOf(
+            Project(0, "Weather Forecast", "Weather Forecast is an app ...", "KimK, Lady Gaga",
+            "Favorite"),
+            Project(1, "Connect Me", "Connect Me is an app ... ",
+            "Kim K, Lady gaga", "Not favorite"),
+            Project(2, "What to Eat", "What to Eat is an app ...",
+            "Kim K, Britney S", "Favorite"),
+            Project(3, "Project Portal", "Project Portal is an app ...",
+            "Kim K, Theodore K", "Not favorite"))
     }
-
-//        var projects = listOf(
-//            Project(0, "Weather Forecast", "Weather Forcast is an app ..."),
-//            Project(1, "Connect Me", "Connect Me is an app ... "),
-//            Project(2, "What to Eat", "What to Eat is an app ..."),
-//            Project(3, "Project Portal", "Project Portal is an app ..."))
-//    }
 }

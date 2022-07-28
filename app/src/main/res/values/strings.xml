@@ -7,6 +7,7 @@
     <string name="authors">Authors</string>
     <string name="add_a_link">Add a Link</string>
     <string name="favorite">Favorite</string>
+    <string name="cs683_projects">CS683 Projects</string>
 
     <string-array name="authors_array">
         <item>Kim Kardashian</item>

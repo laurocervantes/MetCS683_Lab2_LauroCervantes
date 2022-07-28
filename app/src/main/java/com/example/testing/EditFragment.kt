@@ -1,6 +1,7 @@
 package com.example.testing
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -43,10 +44,6 @@ class EditFragment : Fragment() {
         isFavorite = view.findViewById(R.id.checkBox)
         notFavorite = view.findViewById(R.id.checkBox2)
 
-        projTitle.setText(Project.project.title)
-        projDesc.setText(Project.project.description)
-
-
         editTextAuthor= view.findViewById(R.id.editTextAuthor)
         buttonAuthor= view.findViewById(R.id.buttonAuthor)
         listViewAuthor= view.findViewById(R.id.listViewAuthor)
@@ -59,23 +56,21 @@ class EditFragment : Fragment() {
         }
 
 
-        submit.setOnClickListener {
-            Project.project.title = projTitle.text.toString()
-            Project.project.description = projDesc.text.toString()
-            Project.project.authors = listAuthor.toString()
-            if(isFavorite.isChecked){
-                isFavorite.text = "Project is Favorite"
-                Project.project.isFavorite = isFavorite.text.toString()
-                isFavorite.setText(Project.project.isFavorite)
-            } else if(notFavorite.isChecked) {
-                notFavorite.text = "Project Not favorite"
-                Project.project.isFavorite = notFavorite.text.toString()
-                notFavorite.setText(Project.project.isFavorite)
-            }
+        val position:Int = arguments?.getInt("projId")?:0
+        Log.d("TAG","position:"+position)
 
+        projTitle.setText(Project.projects[position].title)
+        projDesc.setText(Project.projects[position].description)
+
+
+        submit.setOnClickListener {
+            Project.projects[position].title = projTitle.text.toString()
+            Project.projects[position].description = projDesc.text.toString()
+            Project.projects[position].authors = listAuthor.toString()
             view.findNavController().
             navigate(R.id.action_editFragment_pop)
         }
+
         cancel.setOnClickListener {
             view.findNavController().
             navigate(R.id.action_editFragment_pop)

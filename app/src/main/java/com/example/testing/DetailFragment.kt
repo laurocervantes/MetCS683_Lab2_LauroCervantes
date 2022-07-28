@@ -1,6 +1,7 @@
 package com.example.testing
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageButton
@@ -26,10 +27,12 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         isFav = view.findViewById(R.id.textViewIsFav)
         authors = view.findViewById(R.id.projectAuthors)
 
-        projTitle.text =  Project.project.title
-        projDesc.text = Project.project.description
-        isFav.text = Project.project.isFavorite
-        authors.text = Project.project.authors
+        val position:Int = arguments?.getInt("projId")?:1
+        Log.d("TAG","position:"+ position)
+        projTitle.text =  Project.projects[position].title
+        projDesc.text = Project.projects[position].description
+        isFav.text = Project.projects[position].isFavorite
+        authors.text = Project.projects[position].description
 
         editProj.setOnClickListener{
             view.findNavController().
