@@ -1,40 +1,121 @@
 package com.example.testing
+
 import android.content.Context
-import android.icu.lang.UCharacter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import android.widget.LinearLayout.VERTICAL
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.testing.databinding.FragmentProjectRecyclerViewBinding
 
+
+/**
+ * A fragment representing a list of Items.
+ */
 class ProjectListRecyclerViewFragment : Fragment() {
+    private var _binding: FragmentProjectRecyclerViewBinding? = null
+    private val binding get() = _binding!!
 
-    lateinit var myProjListRecyclerViewAdapter: MyProjListRecyclerViewAdapter
-    lateinit var projlist: RecyclerView
+    private var columnCount = 1
+    private var largeScreen = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_project_recycler_view, container, false)
+    private lateinit var myAdapter: MyProjListRecyclerViewAdapter
+    private lateinit var viewModel: CurProjectViewModel
+    private lateinit var listViewModel: ProjectListViewModel
+    private lateinit var onProjectClickListener: MyProjListRecyclerViewAdapter.OnProjectClickListener
+
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            columnCount = it.getInt(ARG_COLUMN_COUNT)
+        }
+        arguments?.let {
+            largeScreen = it.getBoolean(ARG_LARGE_SCREEN)
+        }
+
     }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        _binding = FragmentProjectRecyclerViewBinding.inflate(inflater,
+            container, false)
+        return binding.root
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view,savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
 
-        projlist = view.findViewById(R.id.projlist)
 
-        myProjListRecyclerViewAdapter = MyProjListRecyclerViewAdapter(Project.projects)
-        projlist.adapter = myProjListRecyclerViewAdapter
-        projlist.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        viewModel =
+            ViewModelProvider(requireActivity()).get(CurProjectViewModel::class.java)
+        listViewModel =
+            ViewModelProvider(this).get(ProjectListViewModel::class.java)
+//        val viewModel:CurProjectViewModel by activityViewModels()
+//        val listViewModel: ProjectListViewModel by viewModels()
+
+
+        binding.projlist.apply {
+            layoutManager = when {
+                columnCount <= 1 -> LinearLayoutManager(context)
+                else -> GridLayoutManager(context, columnCount)
+            }
+
+              myAdapter = MyProjListRecyclerViewAdapter(
+          //      listViewModel.projectList.value ?: emptyList(),
+                object : MyProjListRecyclerViewAdapter.OnProjectClickListener {
+                    override fun onProjectClick(project: Project) {
+                        viewModel.setCurProject(project)
+                        // this is just for sliding pane
+                        onProjectClickListener.onProjectClick(project)
+
+                        // will not perform the navigation from list fragment to detail fragment
+                        // on the large screen device.
+//                        if (!largeScreen) {
+//                            view.findNavController()?.navigate(
+//                                R.id.action_projListRecycleViewFragment_to_nav_graph
+//                            )
+//                       }
+
+                    }
+                })
+
+            this.adapter = myAdapter
+
+            listViewModel.projectList.observe(viewLifecycleOwner, Observer {
+                myAdapter.replaceItems(it)
+               // viewModel.initCurProject(myAdapter.getProject(0))
+
+            })
+
+            viewModel.curProject.observe(viewLifecycleOwner, Observer {
+                myAdapter.notifyDataSetChanged()
+            })
+
+        }
     }
 
+    companion object {
+
+        // TODO: Customize parameter argument names
+        const val ARG_COLUMN_COUNT = "column-count"
+        const val ARG_LARGE_SCREEN = "large-screen"
+
+
+        // TODO: Customize parameter initialization
+        @JvmStatic
+        fun newInstance(columnCount: Int) =
+            ProjectListRecyclerViewFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_COLUMN_COUNT, columnCount)
+                }
+            }
+    }
 }

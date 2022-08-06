@@ -7,73 +7,55 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import com.example.testing.databinding.FragmentEditBinding
 
 class EditFragment : Fragment() {
-    private lateinit var projTitle: EditText
-    private lateinit var projDesc: EditText
-    private lateinit var submit:Button
-    private lateinit var cancel:Button
-    private lateinit var editTextAuthor: EditText
-    private lateinit var buttonAuthor: Button
-    private lateinit var listViewAuthor: ListView
-    var listAuthor: ArrayList<String> = ArrayList()
-    lateinit var arrayAdapterAuthor: ArrayAdapter<String>
-    private lateinit var editTextLinks: EditText
-    private lateinit var isFavorite: CheckBox
-    private lateinit var notFavorite: CheckBox
+    private var _binding: FragmentEditBinding? = null
+    private val binding get() = _binding!!
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit, container, false)
+        _binding = FragmentEditBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view,savedInstanceState)
 
-        projTitle = view.findViewById(R.id.projTitleEdit)
-        projDesc =  view.findViewById(R.id.projDescEdit)
-
-        submit = view.findViewById(R.id.submit)
-        cancel = view.findViewById(R.id.cancel)
-        isFavorite = view.findViewById(R.id.checkBox)
-        notFavorite = view.findViewById(R.id.checkBox2)
-
-        editTextAuthor= view.findViewById(R.id.editTextAuthor)
-        buttonAuthor= view.findViewById(R.id.buttonAuthor)
-        listViewAuthor= view.findViewById(R.id.listViewAuthor)
-        arrayAdapterAuthor = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, listAuthor)
-        buttonAuthor.setOnClickListener {
-            listAuthor.add(editTextAuthor.text.toString())
-            editTextAuthor.setText("")
-            arrayAdapterAuthor.notifyDataSetChanged()
-            listViewAuthor.adapter = arrayAdapterAuthor
-        }
-
-
-        val position:Int = arguments?.getInt("projId")?:0
+        val position:Int = arguments?.getInt("position")?:0
         Log.d("TAG","position:"+position)
 
-        projTitle.setText(Project.projects[position].title)
-        projDesc.setText(Project.projects[position].description)
 
+        val viewModel =
+            ViewModelProvider(requireActivity()).get(CurProjectViewModel::class.java)
 
-        submit.setOnClickListener {
-            Project.projects[position].title = projTitle.text.toString()
-            Project.projects[position].description = projDesc.text.toString()
-            Project.projects[position].authors = listAuthor.toString()
+        viewModel.curProject.observe(viewLifecycleOwner, Observer {
+            binding.projTitleEdit.setText(it.title)
+            binding.projDescEdit.setText(it.description)
+        })
+
+        binding.submit.setOnClickListener {
+            viewModel.updateCurProject( binding.projTitleEdit.text.toString(),
+                binding.projDescEdit.text.toString() )
+            view.findNavController().navigate(R.id.action_editFragment_pop)
+        }
+
+        binding.cancel.setOnClickListener {
             view.findNavController().
             navigate(R.id.action_editFragment_pop)
         }
+    }
 
-        cancel.setOnClickListener {
-            view.findNavController().
-            navigate(R.id.action_editFragment_pop)
-        }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
